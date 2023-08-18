@@ -1,5 +1,6 @@
 {
     "name": "BB-8 0818",
+    "version": "0.0.1",
     "description": "",
     "dependencies": {
         "core": "*",
