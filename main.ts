@@ -1,38 +1,27 @@
-input.onButtonPressed(Button.B, function () {
-    music.playTone(262, music.beat(BeatFraction.Whole))
-    basic.showIcon(IconNames.Butterfly)
-})
 huskylens.initI2c()
 huskylens.initMode(protocolAlgorithm.ALGORITHM_FACE_RECOGNITION)
+let servo_angle = 90
+let X = huskylens.readeBox(0, Content1.xCenter)
+pins.servoWritePin(AnalogPin.P1, 90)
+pins.analogWritePin(AnalogPin.P4, 0)
+pins.analogWritePin(AnalogPin.P16, 0)
 basic.forever(function () {
     huskylens.request()
-    if (huskylens.isAppear(1, HUSKYLENSResultType_t.HUSKYLENSResultBlock)) {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 30)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 30)
-        maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOff)
-        maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
-        basic.pause(500)
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
-    }
-})
-basic.forever(function () {
-    huskylens.request()
-    if (huskylens.isAppear(1, HUSKYLENSResultType_t.HUSKYLENSResultBlock)) {
-        basic.showIcon(IconNames.Butterfly)
-        maqueen.servoRun(maqueen.Servos.S1, 0)
-        basic.pause(100)
-        maqueen.servoRun(maqueen.Servos.S1, 20)
-        basic.pause(100)
-        maqueen.servoRun(maqueen.Servos.S1, 0)
-        maqueen.servoRun(maqueen.Servos.S2, 54)
-        basic.pause(500)
-        maqueen.servoRun(maqueen.Servos.S2, 0)
-        basic.pause(2000)
-    } else {
-        basic.clearScreen()
-        maqueen.servoRun(maqueen.Servos.S1, 0)
-        maqueen.servoRun(maqueen.Servos.S2, 20)
-        maqueen.motorStop(maqueen.Motors.All)
+    if (huskylens.isAppear(0, HUSKYLENSResultType_t.HUSKYLENSResultBlock)) {
+        while (0 < X && X < 150) {
+            basic.showIcon(IconNames.Heart)
+            servo_angle += 4
+            pins.servoWritePin(AnalogPin.P1, servo_angle)
+        }
+        while (150 <= X && X <= 170) {
+            basic.showIcon(IconNames.SmallHeart)
+            pins.servoWritePin(AnalogPin.P1, 90)
+            pins.analogWritePin(AnalogPin.P4, 1023)
+        }
+        while (170 < X && X < 320) {
+            basic.showIcon(IconNames.Butterfly)
+            servo_angle += -4
+            pins.servoWritePin(AnalogPin.P1, servo_angle)
+        }
     }
 })
